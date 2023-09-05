@@ -1517,7 +1517,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 920, y: 0}
+  m_AnchoredPosition: {x: 889.51605, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1606980339
@@ -1534,7 +1534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 3914317957784405266, guid: 6cda6678270d1a542877acc624e84dd1,
     type: 3}
-  boardSize: 22
+  boardSize: 8
 --- !u!114 &1606980340
 MonoBehaviour:
   m_ObjectHideFlags: 0

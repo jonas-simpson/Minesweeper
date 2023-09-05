@@ -13,7 +13,9 @@ public class TileBehaviour
 {
     public RectTransform rectTransform;
     private Image myimage;
-    private bool isTouching = false;
+    public bool isTouching = false;
+    public bool isRevealed = false;
+    public bool isMarked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,34 +29,55 @@ public class TileBehaviour
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        myimage.color = Color.gray;
-        isTouching = true;
+        if (!isRevealed)
+        {
+            myimage.color = Color.gray;
+            isTouching = true;
 
-        //Check if we are touching in 0.5 seconds
-        Invoke("CheckForHold", 0.5f);
-        Debug.Log("Mouse down");
+            //Check if we are touching in 0.5 seconds
+            CancelInvoke("CheckForHold");
+            Invoke("CheckForHold", 0.5f);
+        }
+
+        Debug.Log("Mouse down on " + gameObject.name);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (isTouching)
+        CancelInvoke("CheckForHold");
+
+        if (!isMarked && !isRevealed)
         {
-            //Valid touch released in less than <0.5 seconds
-            myimage.color = Color.green;
-            CancelInvoke("CheckForHold");
-            isTouching = false;
+            if (isTouching)
+            {
+                //Valid touch released in less than <0.5 seconds
+                myimage.color = Color.green;
+                isRevealed = true;
+            }
         }
-        Debug.Log("Mouse up");
+        else if (isMarked && isTouching)
+        {
+            myimage.color = Color.red;
+        }
+
+        isTouching = false;
+        Debug.Log("Mouse up on " + gameObject.name);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //User has deliberately moved their finger off tile while pressing. Canceling touch
         if (isTouching)
         {
-            isTouching = false;
-            myimage.color = Color.white;
+            if (!isMarked)
+            {
+                myimage.color = Color.white;
+            }
+            else
+            {
+                myimage.color = Color.red;
+            }
         }
+        isTouching = false;
     }
 
     void CheckForHold()
@@ -62,7 +85,16 @@ public class TileBehaviour
         if (isTouching)
         {
             //User is deliberately holding this tile. Mark as held before release
-            myimage.color = Color.red;
+            if (!isMarked)
+            {
+                myimage.color = Color.red;
+                isMarked = true;
+            }
+            else
+            {
+                myimage.color = Color.white;
+                isMarked = false;
+            }
             isTouching = false;
         }
     }
